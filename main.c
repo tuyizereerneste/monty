@@ -1,65 +1,45 @@
-#include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include "monty.h"
+#include <stdio.h>
 
-#define MAX_LINE_LENGTH 100
+char **global_line_args;
 
 int main(int argc, char *argv[])
 {
-	        FILE *file;
+	FILE *file;
+	stack_t *stack = NULL;
+	char *line = NULL;
+	size_t len = 0;
+	unsigned int line_number = 0;
 
-		        char line[MAX_LINE_LENGTH];
+	if (argc != 2)
+	{
+		fprintf(stderr, "Usage: %s <file>\n", argv[0]);
+		return (EXIT_FAILURE);
+	}
 
-			        unsigned int number = 1;
+	file = fopen(argv[1], "r");
+	if (!file)
+	{
+		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
+		return (EXIT_FAILURE);
+	}
+	while (fgets(line, len, file) != NULL)
+	{
+		line_number++;
 
-				        if (argc != 2)
-						        {
-	fprintf(stderr, "Usage: %s <filename>\n", argv[0]);
-	                return EXIT_FAILURE;
-			        }
-					        file = fopen(argv[1], "r");
-						        if (file == NULL)
-								        {
-										                fprintf(stderr, "Error opening file: %s\n", argv[1]);
-												                return EXIT_FAILURE;
-														        }
-							        while (fgets(line, sizeof(line), file))
-									        {
-											                strtok(line, "\n");
-													                if (strncmp(line, "push", 4) == 0)
-																                {
-																			                int value = atoi(line + 5);
-																					                push(value);
-																							                }
-															                else if (strcmp(line, "pall") == 0)
-																	{
-																		                        print_stack();
-																					                }
-																	                else if (strcmp(line, "swap") == 0)
-																				                {
-																							                        swap(&top, number);
-																										                }
-																			                else if (strcmp(line, "pint") == 0)
-																					{
-																						                        pint(&top, number);
-																									                }
-																					                else if (strcmp(line, "pop") == 0)
-																								                {
-																											                        pop(&top, number);
-																														                }
-																							                else if (strcmp(line, "add") == 0)
-																										                {
-																													                        add(&top,number);
-																																                }
-																			else if (strcmp(line, "sub") == 0)
-																				                {
-																							                        sub(&top,number);
-																										                }
-																			                number++;
+		printf("Line %d: %s", line_number, line);
 
-																					        }
-								        fclose(file);
-
-									        return 0;
+		global_line_args = tokenize_line(line);
+		if (global_line_args[0])
+		{
+			instruction_t *instruction = find_instruction(global_line_args[0]);
+			execute_instruction(instruction, &stack, line_number);
+		}
+		free(global_line_args);
+	}
+	free(line);
+	fclose(file);
+	return (EXIT_SUCCESS);
 }
+

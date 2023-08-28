@@ -10,20 +10,14 @@
 
 void add(stack_t **head, unsigned int number)
 {
-	stack_t *top;
-	stack_t *next_top;
+	int sum;
 
-	if (*head == NULL || (*head)->prev == NULL)
+	if (*head == NULL || (*head)->next == NULL)
 	{
 		fprintf(stderr, "L%u: can't add, stack too short\n", number);
 		exit(EXIT_FAILURE);
 	}
-	top = *head;
-	next_top = top->prev;
-	next_top->n += top->n;
-	*head = next_top;
-	if (top->prev)
-		top->prev->next = NULL;
-	free(top);
+	sum = (*head)->n + (*head)->next->n;
+	(*head)->next->n = sum;
+	pop(head, number);
 }
-

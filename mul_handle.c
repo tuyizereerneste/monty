@@ -10,19 +10,14 @@
 
 void mul(stack_t **head, unsigned int number)
 {
-	stack_t *first;
-	stack_t *second;
+	int product;
 
-	if (*head == NULL || (*head)->prev == NULL)
+	if (*head == NULL || (*head)->next == NULL)
 	{
 		fprintf(stderr, "L%u: can't mul, stack too short\n", number);
 		exit(EXIT_FAILURE);
 	}
-	first = *head;
-	second = first->prev;
-	second->n *= first->n;
-	*head = second;
-	if (first->prev)
-		first->prev->next = NULL;
-	free(first);
+	product = (*head)->next->n * (*head)->n;
+	(*head)->next->n = product;
+	pop(head, number);
 }

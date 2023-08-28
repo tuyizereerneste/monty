@@ -8,24 +8,16 @@
  * @line_number: Line number of the command
  */
 
-void swap(stack_t **head, unsigned int n)
+void swap(stack_t **head, unsigned int number)
 {
-	stack_t *top;
-	stack_t *next_top;
+	int top;
 
-
-	if (*head == NULL || (*head)->prev == NULL)
+	if (*head == NULL || (*head)->next == NULL)
 	{
-		fprintf(stderr, "L%u: can't swap, stack too short\n", n);
+		fprintf(stderr, "L%u: can't swap, stack too short\n", number);
 		exit(EXIT_FAILURE);
 	}
-	top = *head;
-	next_top = top->prev;
-	top->prev = next_top->prev;
-	if (next_top->prev)
-		next_top->prev->next = top;
-	next_top->prev = top;
-	top->next = next_top;
-	next_top->next = NULL;
-	*head = next_top;
+	top = (*head)->n;
+	(*head)->n = (*head)->next->n;
+	(*head)->next->n = top;
 }

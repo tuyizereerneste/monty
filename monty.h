@@ -1,6 +1,12 @@
 #ifndef MONTY_H
 #define MONTY_H
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+char **global_line_args;
+
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
  * @n: integer
@@ -34,17 +40,23 @@ typedef struct instruction_s
 
 extern stack_t *top;
 
-void push(int value);
-void print_stack();
+void push(stack_t **stack, unsigned int line_number);
+void pall(stack_t **head, unsigned int number);
 void pint(stack_t **head, unsigned int number);
-void pop(stack_t **head, unsigned int n);
-void swap(stack_t **stack, unsigned int line_number);
+void pop(stack_t **head, unsigned int number);
+void swap(stack_t **head, unsigned int number);
 void add(stack_t **head, unsigned int number);
 void nop(stack_t **head, unsigned int number);
 void sub(stack_t **head, unsigned int number);
 void mul(stack_t **head, unsigned int number);
 void division(stack_t **head, unsigned int line_number);
-void mod(stack_t **head, unsigned int line_number);
-
+void mod(stack_t **head, unsigned int number);
+char **tokenize_line(char *line);
+void execute_instruction(instruction_t *instruction, stack_t **head, unsigned int number);
+instruction_t *find_instruction(const char *opcode);
+void pchar(stack_t **head, unsigned int number);
+void pstr(stack_t **head, unsigned int number);
+void rotl(stack_t **head, unsigned int number);
+void rotr(stack_t **head, unsigned int number);
 
 #endif /* MONTY_H */

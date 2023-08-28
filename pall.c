@@ -6,12 +6,14 @@
  * Return: nothing
  */
 
-void print_stack()
+void pall(stack_t **head, unsigned int number)
 {
-	stack_t *current = top;
+	stack_t *current = *head;
+	(void)number;
+
 	while (current != NULL)
 	{
 		printf("%d\n", current->n);
-		current = current->prev;
+		current = current->next;
 	}
 }
