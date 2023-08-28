@@ -8,8 +8,7 @@ int main(int argc, char *argv[])
 {
 	FILE *file;
 	stack_t *stack = NULL;
-	char *line = NULL;
-	size_t len = 0;
+	char line[MAX_LINE_LENGTH];
 	unsigned int line_number = 0;
 
 	if (argc != 2)
@@ -24,11 +23,9 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
 		return (EXIT_FAILURE);
 	}
-	while (fgets(line, len, file) != NULL)
+	while (fgets(line, sizeof(line), file) != NULL)
 	{
 		line_number++;
-
-		printf("Line %d: %s", line_number, line);
 
 		global_line_args = tokenize_line(line);
 		if (global_line_args[0])
@@ -38,7 +35,6 @@ int main(int argc, char *argv[])
 		}
 		free(global_line_args);
 	}
-	free(line);
 	fclose(file);
 	return (EXIT_SUCCESS);
 }

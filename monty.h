@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define MAX_LINE_LENGTH 1024
+
 char **global_line_args;
 
 /**
